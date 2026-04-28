@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register – FreshMart</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body>
+
+<nav class="navbar main-nav">
+  <div class="container d-flex justify-content-between align-items-center">
+    <a class="navbar-brand" href="../index.html">
+      <span class="brand-icon">🛒</span>
+      <span class="brand-name">Fresh<span>Mart</span></span>
+    </a>
+  </div>
+</nav>
+
+<section class="auth-section py-5">
+  <div class="container">
+    <div class="auth-card" style="max-width:520px">
+      <div class="text-center mb-4">
+        <div style="font-size:3rem">🌿</div>
+        <h2>Create Account</h2>
+        <p class="subtitle">Join FreshMart – Fresh groceries at your doorstep</p>
+      </div>
+
+      <div id="errorMsg" class="alert alert-danger py-2 d-none"></div>
+      <div id="successMsg" class="alert alert-success py-2 d-none"></div>
+
+      <div class="row g-3">
+        <div class="col-6">
+          <div class="form-group">
+            <label>First Name</label>
+            <div class="input-icon-wrap">
+              <i class="fas fa-user"></i>
+              <input type="text" id="firstName" class="form-control-fresh" placeholder="First name"/>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group">
+            <label>Last Name</label>
+            <div class="input-icon-wrap">
+              <i class="fas fa-user"></i>
+              <input type="text" id="lastName" class="form-control-fresh" placeholder="Last name"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Email Address</label>
+        <div class="input-icon-wrap">
+          <i class="fas fa-envelope"></i>
+          <input type="email" id="email" class="form-control-fresh" placeholder="your@email.com"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Phone Number</label>
+        <div class="input-icon-wrap">
+          <i class="fas fa-phone"></i>
+          <input type="tel" id="phone" class="form-control-fresh" placeholder="+91 98765 43210"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-icon-wrap">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="password" class="form-control-fresh" placeholder="At least 8 characters" oninput="checkStrength()"/>
+        </div>
+        <div class="mt-1" id="strengthBar" style="display:none">
+          <div style="height:4px;border-radius:2px;background:var(--border);overflow:hidden">
+            <div id="strengthFill" style="height:100%;transition:all 0.3s;width:0"></div>
+          </div>
+          <span id="strengthText" style="font-size:0.72rem;color:var(--text-light)"></span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <div class="input-icon-wrap">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="confirmPass" class="form-control-fresh" placeholder="Re-enter password"/>
+        </div>
+      </div>
+
+      <label class="d-flex align-items-start gap-2 mb-4 mt-2" style="cursor:pointer;font-size:0.83rem;color:var(--text-mid)">
+        <input type="checkbox" id="termsCheck" style="margin-top:3px"/>
+        I agree to the <a href="#" style="color:var(--green)">Terms of Service</a> and <a href="#" style="color:var(--green)">Privacy Policy</a>
+      </label>
+
+      <button class="btn-auth" onclick="handleRegister()">
+        <i class="fas fa-user-plus me-2"></i>Create Account
+      </button>
+
+      <div class="auth-link mt-3">
+        Already have an account? <a href="login.html">Sign In</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/data.js"></script>
+<script src="../js/cart.js"></script>
+<script>
+function checkStrength() {
+  const pw = document.getElementById('password').value;
+  const bar = document.getElementById('strengthBar');
+  const fill = document.getElementById('strengthFill');
+  const text = document.getElementById('strengthText');
+  bar.style.display = pw ? 'block' : 'none';
+  let strength = 0;
+  if (pw.length >= 8) strength++;
+  if (/[A-Z]/.test(pw)) strength++;
+  if (/[0-9]/.test(pw)) strength++;
+  if (/[^A-Za-z0-9]/.test(pw)) strength++;
+  const levels = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+  const colors = ['', '#ef5350', '#ff9800', '#ffc107', '#4caf50'];
+  fill.style.width = `${strength * 25}%`;
+  fill.style.background = colors[strength] || '';
+  text.textContent = levels[strength] || '';
+  text.style.color = colors[strength] || '';
+}
+
+function handleRegister() {
+  const first = document.getElementById('firstName').value.trim();
+  const last = document.getElementById('lastName').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const pw = document.getElementById('password').value;
+  const cpw = document.getElementById('confirmPass').value;
+  const terms = document.getElementById('termsCheck').checked;
+  const err = document.getElementById('errorMsg');
+  const succ = document.getElementById('successMsg');
+
+  if (!first || !last || !email || !phone || !pw || !cpw) {
+    err.textContent = 'Please fill in all fields.'; err.classList.remove('d-none'); succ.classList.add('d-none'); return;
+  }
+  if (!email.includes('@')) { err.textContent = 'Invalid email address.'; err.classList.remove('d-none'); return; }
+  if (pw.length < 8) { err.textContent = 'Password must be at least 8 characters.'; err.classList.remove('d-none'); return; }
+  if (pw !== cpw) { err.textContent = 'Passwords do not match.'; err.classList.remove('d-none'); return; }
+  if (!terms) { err.textContent = 'Please accept the terms and conditions.'; err.classList.remove('d-none'); return; }
+
+  err.classList.add('d-none');
+  loginUser(email, `${first} ${last}`);
+
+  succ.textContent = `🎉 Account created successfully! Welcome, ${first}!`;
+  succ.classList.remove('d-none');
+  document.querySelector('.btn-auth').innerHTML = '<i class="fas fa-check me-2"></i>Account Created!';
+  document.querySelector('.btn-auth').disabled = true;
+  setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
+}
+</script>
+</body>
+</html>

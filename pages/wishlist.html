@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wishlist – FreshMart</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body>
+<nav class="navbar main-nav sticky-top">
+  <div class="container d-flex justify-content-between align-items-center">
+    <a class="navbar-brand" href="../index.html"><span class="brand-icon">🛒</span><span class="brand-name">Fresh<span>Mart</span></span></a>
+    <div class="nav-actions d-flex gap-3">
+      <a href="wishlist.html" class="nav-icon-btn"><i class="fas fa-heart"></i><span class="badge" id="wishlistCount">0</span></a>
+      <a href="cart.html" class="nav-icon-btn"><i class="fas fa-shopping-cart"></i><span class="badge" id="cartCount">0</span></a>
+    </div>
+  </div>
+</nav>
+<div class="page-hero">
+  <div class="container">
+    <h1>My Wishlist</h1>
+    <nav aria-label="breadcrumb" class="mt-2"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../index.html">Home</a></li><li class="breadcrumb-item active">Wishlist</li></ol></nav>
+  </div>
+</div>
+<section class="py-5" style="background:var(--off-white)">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h5 style="font-family:var(--font-display);font-weight:900" id="wlTitle">My Wishlist</h5>
+      <button class="btn btn-sm" style="background:#ffebee;color:var(--red);border-radius:8px;font-weight:700;border:none" onclick="clearWishlist()">
+        <i class="fas fa-trash me-1"></i>Clear All
+      </button>
+    </div>
+    <div class="row g-4" id="wishlistGrid"></div>
+    <div id="emptyWishlist" class="d-none">
+      <div class="empty-state">
+        <i class="fas fa-heart-broken" style="font-size:4rem;color:var(--border)"></i>
+        <h5>Your wishlist is empty</h5>
+        <p style="color:var(--text-light)">Save items you love by clicking the heart icon on any product.</p>
+        <a href="products.html" class="btn btn-primary-fresh mt-3">Browse Products</a>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="liveToast" class="toast"><div class="toast-header"><strong class="me-auto">FreshMart</strong><button type="button" class="btn-close" data-bs-dismiss="toast"></button></div><div class="toast-body" id="toastMsg"></div></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/data.js"></script>
+<script src="../js/cart.js"></script>
+<script>
+function renderWishlist() {
+  const wl = getWishlist();
+  const grid = document.getElementById('wishlistGrid');
+  const empty = document.getElementById('emptyWishlist');
+  document.getElementById('wlTitle').textContent = `My Wishlist (${wl.length} items)`;
+  updateCartBadge();
+  if (!wl.length) { grid.innerHTML=''; empty.classList.remove('d-none'); return; }
+  empty.classList.add('d-none');
+  grid.innerHTML = wl.map(id => {
+    const p = PRODUCTS.find(x=>x.id===id);
+    if (!p) return '';
+    const discount = p.oldPrice ? Math.round((p.oldPrice-p.price)/p.oldPrice*100) : 0;
+    return `<div class="col-6 col-md-4 col-lg-3">
+      <div class="product-card">
+        <div class="product-img-wrap">
+          ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
+          <span class="product-emoji">${p.emoji}</span>
+          <button class="wishlist-btn active" onclick="removeFromWishlist(${p.id})"><i class="fas fa-heart"></i></button>
+        </div>
+        <div class="product-body">
+          <div class="product-cat">${p.cat}</div>
+          <div class="product-name">${p.name}</div>
+          <div class="product-unit">${p.unit}</div>
+          <div class="product-rating">${'★'.repeat(Math.floor(p.rating))}${'☆'.repeat(5-Math.floor(p.rating))}<span>(${p.reviews})</span></div>
+          <div class="price-row">
+            <span class="price">₹${p.price}</span>
+            ${p.oldPrice ? `<span class="price-old">₹${p.oldPrice}</span>` : ''}
+            ${discount ? `<span class="price-discount">${discount}% OFF</span>` : ''}
+          </div>
+          <div class="d-flex gap-2 mt-2">
+            <button class="btn-add-cart flex-1" onclick="moveToCart(${p.id}, this)" ${p.stock===0?'disabled':''}>
+              <i class="fas fa-cart-plus"></i> Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function removeFromWishlist(id) {
+  toggleWishlist(id);
+  renderWishlist();
+}
+
+function moveToCart(id, btn) {
+  addToCart(id);
+  btn.innerHTML = '<i class="fas fa-check"></i> Added!';
+  btn.style.background = '#43a047';
+  setTimeout(() => { btn.innerHTML = '<i class="fas fa-cart-plus"></i> Add to Cart'; btn.style.background=''; }, 1500);
+}
+
+function clearWishlist() {
+  if (!getWishlist().length) return;
+  if (confirm('Clear entire wishlist?')) {
+    localStorage.removeItem('fm_wishlist');
+    renderWishlist();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', renderWishlist);
+</script>
+</body>
+</html>

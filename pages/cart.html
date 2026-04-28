@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cart – FreshMart</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body>
+
+<nav class="navbar main-nav sticky-top">
+  <div class="container d-flex justify-content-between align-items-center">
+    <a class="navbar-brand" href="../index.html">
+      <span class="brand-icon">🛒</span>
+      <span class="brand-name">Fresh<span>Mart</span></span>
+    </a>
+    <div class="nav-actions d-flex gap-3">
+      <a href="wishlist.html" class="nav-icon-btn"><i class="fas fa-heart"></i><span class="badge" id="wishlistCount">0</span></a>
+      <a href="cart.html" class="nav-icon-btn"><i class="fas fa-shopping-cart"></i><span class="badge" id="cartCount">0</span></a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="container">
+    <h1>Shopping Cart</h1>
+    <nav aria-label="breadcrumb" class="mt-2">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
+        <li class="breadcrumb-item active">Cart</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<section class="py-5" style="background:var(--off-white)">
+  <div class="container">
+    <div class="row g-4" id="cartContent">
+      <div class="col-12 text-center py-5">
+        <div class="spinner-border text-success" role="status"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="liveToast" class="toast"><div class="toast-header"><strong class="me-auto">🛒 FreshMart</strong><button type="button" class="btn-close" data-bs-dismiss="toast"></button></div><div class="toast-body" id="toastMsg"></div></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/data.js"></script>
+<script src="../js/cart.js"></script>
+<script>
+let appliedDiscount = 0;
+
+function renderCart() {
+  const cart = getCart();
+  const content = document.getElementById('cartContent');
+
+  if (!cart.length) {
+    content.innerHTML = `
+      <div class="col-12">
+        <div class="empty-state">
+          <i class="fas fa-shopping-cart"></i>
+          <h5>Your cart is empty</h5>
+          <p style="color:var(--text-light)">Looks like you haven't added anything yet!</p>
+          <a href="products.html" class="btn btn-primary-fresh mt-3">Start Shopping</a>
+        </div>
+      </div>`;
+    return;
+  }
+
+  const subtotal = getCartTotal();
+  const delivery = subtotal >= 499 ? 0 : 49;
+  const total = subtotal + delivery - appliedDiscount;
+
+  content.innerHTML = `
+    <div class="col-lg-8">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 style="font-family:var(--font-display);font-weight:900">${cart.length} Item${cart.length>1?'s':''} in Cart</h5>
+        <button class="btn btn-sm" style="background:#ffebee;color:var(--red);border-radius:8px;font-weight:700" onclick="if(confirm('Clear cart?')){clearCart();renderCart()}">
+          <i class="fas fa-trash me-1"></i>Clear All
+        </button>
+      </div>
+      ${cart.map(item => {
+        const p = PRODUCTS.find(x => x.id === item.id);
+        if (!p) return '';
+        return `<div class="cart-item">
+          <div class="cart-item-emoji">${p.emoji}</div>
+          <div class="cart-item-info flex-1">
+            <div class="cart-item-name">${p.name}</div>
+            <div class="cart-item-unit">${p.unit}</div>
+            <div class="cart-item-price">₹${p.price} × ${item.qty} = <strong>₹${p.price * item.qty}</strong></div>
+          </div>
+          <div class="qty-selector mx-3">
+            <button class="qty-btn" onclick="changeItemQty(${p.id}, ${item.qty - 1})">−</button>
+            <input class="qty-input" value="${item.qty}" readonly/>
+            <button class="qty-btn" onclick="changeItemQty(${p.id}, ${item.qty + 1})">+</button>
+          </div>
+          <button class="remove-btn" onclick="removeItem(${p.id})"><i class="fas fa-times"></i></button>
+        </div>`;
+      }).join('')}
+
+      <!-- Coupon -->
+      <div class="bg-white rounded-3 p-4 mt-3 shadow-sm">
+        <h6 style="font-weight:700"><i class="fas fa-tag me-2 text-success"></i>Have a Coupon?</h6>
+        <div class="coupon-input">
+          <input type="text" id="couponIn" placeholder="Enter coupon code…" style="text-transform:uppercase"/>
+          <button onclick="applyCouponCode()">Apply</button>
+        </div>
+        <div id="couponMsg" class="mt-1" style="font-size:0.82rem"></div>
+        <div style="font-size:0.78rem;color:var(--text-light)">Try: FRESHMART20 | SAVE50 | NEWUSER10</div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="order-summary-card">
+        <h5>Order Summary</h5>
+        <div class="summary-row"><span>Subtotal (${cart.length} items)</span><span>₹${subtotal}</span></div>
+        <div class="summary-row"><span>Delivery Charges</span><span>${delivery === 0 ? '<span style="color:var(--green)">FREE</span>' : `₹${delivery}`}</span></div>
+        ${appliedDiscount ? `<div class="summary-row" style="color:var(--green)"><span>Discount</span><span>−₹${appliedDiscount}</span></div>` : ''}
+        <div class="summary-row total"><span>Total</span><span>₹${total}</span></div>
+        ${subtotal < 499 ? `<p style="font-size:0.78rem;color:var(--text-light);margin-top:6px">Add items worth ₹${499 - subtotal} more for FREE delivery!</p>` : '<p style="font-size:0.78rem;color:var(--green);margin-top:6px">🎉 You qualify for FREE delivery!</p>'}
+        <a href="checkout.html" class="btn-checkout d-block text-center mt-4 text-decoration-none">
+          Proceed to Checkout <i class="fas fa-arrow-right ms-2"></i>
+        </a>
+        <a href="products.html" class="d-block text-center mt-3" style="font-size:0.85rem;color:var(--text-mid)">
+          <i class="fas fa-arrow-left me-1"></i>Continue Shopping
+        </a>
+      </div>
+    </div>`;
+}
+
+function changeItemQty(id, qty) {
+  updateCartQty(id, qty);
+  renderCart();
+}
+function removeItem(id) {
+  removeFromCart(id);
+  renderCart();
+}
+function applyCouponCode() {
+  const code = document.getElementById('couponIn')?.value.trim();
+  const subtotal = getCartTotal();
+  const result = applyCoupon(code, subtotal);
+  const msg = document.getElementById('couponMsg');
+  if (result.success) {
+    appliedDiscount = result.discount;
+    msg.style.color = 'var(--green)';
+  } else {
+    appliedDiscount = 0;
+    msg.style.color = 'var(--red)';
+  }
+  msg.textContent = result.msg;
+  renderCart();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  updateCartBadge();
+  renderCart();
+});
+</script>
+</body>
+</html>

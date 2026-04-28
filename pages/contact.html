@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us – FreshMart</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body>
+<nav class="navbar main-nav sticky-top">
+  <div class="container d-flex justify-content-between align-items-center">
+    <a class="navbar-brand" href="../index.html"><span class="brand-icon">🛒</span><span class="brand-name">Fresh<span>Mart</span></span></a>
+    <div class="nav-actions d-flex gap-3">
+      <a href="cart.html" class="nav-icon-btn"><i class="fas fa-shopping-cart"></i><span class="badge" id="cartCount">0</span></a>
+    </div>
+  </div>
+</nav>
+<div class="page-hero">
+  <div class="container">
+    <h1>Contact Us</h1>
+    <p class="mt-2" style="opacity:0.85">We'd love to hear from you. Reach out anytime!</p>
+    <nav aria-label="breadcrumb" class="mt-2"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../index.html">Home</a></li><li class="breadcrumb-item active">Contact</li></ol></nav>
+  </div>
+</div>
+<section class="py-5" style="background:var(--off-white)">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="contact-info-card">
+          <h5 style="font-family:var(--font-display);font-weight:900;margin-bottom:24px">Get in Touch</h5>
+          <div class="info-item"><div class="info-icon"><i class="fas fa-map-marker-alt"></i></div><div><strong>Our Address</strong><p style="font-size:0.85rem;color:var(--text-mid);margin:4px 0 0">42 Market Street, Green Park,<br/>Mumbai 400001, Maharashtra</p></div></div>
+          <div class="info-item"><div class="info-icon"><i class="fas fa-phone-alt"></i></div><div><strong>Phone</strong><p style="font-size:0.85rem;color:var(--text-mid);margin:4px 0 0">+91 98765 43210<br/>+91 11 4567 8900</p></div></div>
+          <div class="info-item"><div class="info-icon"><i class="fas fa-envelope"></i></div><div><strong>Email</strong><p style="font-size:0.85rem;color:var(--text-mid);margin:4px 0 0">hello@freshmart.in<br/>support@freshmart.in</p></div></div>
+          <div class="info-item"><div class="info-icon"><i class="fas fa-clock"></i></div><div><strong>Working Hours</strong><p style="font-size:0.85rem;color:var(--text-mid);margin:4px 0 0">Mon–Sat: 8:00 AM – 10:00 PM<br/>Sunday: 9:00 AM – 8:00 PM</p></div></div>
+          <div class="mt-4">
+            <h6 class="fw-bold mb-3">Follow Us</h6>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-youtube"></i></a>
+              <a href="#"><i class="fab fa-whatsapp"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="bg-white rounded-3 p-4 p-md-5 shadow-sm">
+          <h5 style="font-family:var(--font-display);font-weight:900;margin-bottom:6px">Send Us a Message</h5>
+          <p style="color:var(--text-mid);font-size:0.88rem;margin-bottom:28px">We typically reply within 2 business hours.</p>
+          <div id="formSuccess" class="alert alert-success d-none py-3">
+            <i class="fas fa-check-circle me-2"></i>Thanks! Your message has been sent. We'll get back to you soon.
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label small fw-bold">Your Name *</label>
+              <div class="input-icon-wrap"><i class="fas fa-user"></i><input type="text" id="cName" class="form-control-fresh" placeholder="Full name"/></div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold">Email Address *</label>
+              <div class="input-icon-wrap"><i class="fas fa-envelope"></i><input type="email" id="cEmail" class="form-control-fresh" placeholder="your@email.com"/></div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold">Phone</label>
+              <div class="input-icon-wrap"><i class="fas fa-phone"></i><input type="tel" id="cPhone" class="form-control-fresh" placeholder="+91 XXXXX XXXXX"/></div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold">Subject *</label>
+              <select class="form-control-fresh w-100" id="cSubject">
+                <option value="">Select subject</option>
+                <option>Order Issue</option>
+                <option>Delivery Problem</option>
+                <option>Product Quality</option>
+                <option>Payment Query</option>
+                <option>General Inquiry</option>
+                <option>Feedback</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label small fw-bold">Message *</label>
+              <textarea id="cMessage" class="form-control-fresh w-100" rows="5" placeholder="Tell us how we can help you…" style="resize:vertical"></textarea>
+            </div>
+            <div class="col-12">
+              <button class="btn-auth" style="max-width:200px" onclick="submitContact()">
+                <i class="fas fa-paper-plane me-2"></i>Send Message
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="mt-5">
+      <div class="section-header mb-4"><h2>Frequently Asked <span>Questions</span></h2></div>
+      <div class="accordion" id="faqAccordion">
+        <div class="accordion-item border-0 mb-2 rounded-3 overflow-hidden shadow-sm">
+          <h2 class="accordion-header"><button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">How long does delivery take?</button></h2>
+          <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion"><div class="accordion-body" style="color:var(--text-mid)">We offer express 2-hour delivery for orders placed before 6 PM. Standard delivery is within 4–6 hours. Free delivery on orders above ₹499.</div></div>
+        </div>
+        <div class="accordion-item border-0 mb-2 rounded-3 overflow-hidden shadow-sm">
+          <h2 class="accordion-header"><button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">What is your return policy?</button></h2>
+          <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body" style="color:var(--text-mid)">We have a hassle-free 24-hour return policy for perishables and 7-day return policy for packaged goods. Simply contact us and we'll arrange a pickup.</div></div>
+        </div>
+        <div class="accordion-item border-0 mb-2 rounded-3 overflow-hidden shadow-sm">
+          <h2 class="accordion-header"><button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">Are your products certified organic?</button></h2>
+          <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body" style="color:var(--text-mid)">Yes! All our organic products are certified by APEDA and sourced directly from registered organic farms. Look for the green "Organic" badge on product listings.</div></div>
+        </div>
+        <div class="accordion-item border-0 mb-2 rounded-3 overflow-hidden shadow-sm">
+          <h2 class="accordion-header"><button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">What payment methods are accepted?</button></h2>
+          <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body" style="color:var(--text-mid)">We accept UPI (GPay, PhonePe, Paytm), Credit/Debit cards (Visa, Mastercard, RuPay), Net Banking, and Cash on Delivery.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="liveToast" class="toast"><div class="toast-header"><strong class="me-auto">FreshMart</strong><button type="button" class="btn-close" data-bs-dismiss="toast"></button></div><div class="toast-body" id="toastMsg"></div></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/data.js"></script>
+<script src="../js/cart.js"></script>
+<script>
+function submitContact() {
+  const name = document.getElementById('cName').value.trim();
+  const email = document.getElementById('cEmail').value.trim();
+  const subject = document.getElementById('cSubject').value;
+  const message = document.getElementById('cMessage').value.trim();
+  if (!name || !email || !subject || !message) { alert('Please fill in all required fields.'); return; }
+  const btn = document.querySelector('.btn-auth');
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending…';
+  btn.disabled = true;
+  setTimeout(() => {
+    document.getElementById('formSuccess').classList.remove('d-none');
+    btn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Send Message';
+    btn.disabled = false;
+    ['cName','cEmail','cPhone','cMessage'].forEach(id => document.getElementById(id).value='');
+    document.getElementById('cSubject').value='';
+    window.scrollTo({top:300,behavior:'smooth'});
+  }, 1400);
+}
+document.addEventListener('DOMContentLoaded', updateCartBadge);
+</script>
+</body>
+</html>

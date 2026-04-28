@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard – FreshMart</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body>
+
+<nav class="navbar main-nav sticky-top">
+  <div class="container d-flex justify-content-between align-items-center">
+    <a class="navbar-brand" href="../index.html">
+      <span class="brand-icon">🛒</span>
+      <span class="brand-name">Fresh<span>Mart</span></span>
+    </a>
+    <div class="nav-actions d-flex gap-3">
+      <a href="cart.html" class="nav-icon-btn"><i class="fas fa-shopping-cart"></i><span class="badge" id="cartCount">0</span></a>
+      <button onclick="logoutUser()" class="btn btn-sm" style="background:#ffebee;color:var(--red);border-radius:8px;font-weight:700;border:none">
+        <i class="fas fa-sign-out-alt me-1"></i>Logout
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="dashboard-layout">
+
+  <!-- Sidebar -->
+  <aside class="dashboard-sidebar d-none d-lg-block">
+    <div class="sidebar-user">
+      <div class="user-avatar" id="userAvatar">U</div>
+      <strong id="userName">User</strong>
+      <span id="userEmail">user@email.com</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#overview" class="active" onclick="showTab('overview', this)"><i class="fas fa-home"></i> Overview</a>
+      <a href="#orders" onclick="showTab('orders', this)"><i class="fas fa-box"></i> My Orders</a>
+      <a href="#wishlist" onclick="showTab('wishlist', this)"><i class="fas fa-heart"></i> Wishlist</a>
+      <a href="#profile" onclick="showTab('profile', this)"><i class="fas fa-user"></i> My Profile</a>
+      <a href="#addresses" onclick="showTab('addresses', this)"><i class="fas fa-map-marker-alt"></i> Addresses</a>
+      <a href="cart.html"><i class="fas fa-shopping-cart"></i> My Cart</a>
+      <a href="#" onclick="logoutUser()" style="color:var(--red)"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </nav>
+  </aside>
+
+  <!-- Content -->
+  <main class="dashboard-content">
+
+    <!-- Tab: Overview -->
+    <div id="tab-overview">
+      <h4 style="font-family:var(--font-display);font-weight:900;margin-bottom:24px">
+        Welcome back, <span id="greetName" style="color:var(--green)">User</span>! 👋
+      </h4>
+
+      <div class="row g-4 mb-4">
+        <div class="col-6 col-lg-3">
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon" style="background:#e8f5e9;color:var(--green)"><i class="fas fa-box"></i></div>
+            <div><strong>12</strong><span>Total Orders</span></div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon" style="background:#e3f2fd;color:#1565c0"><i class="fas fa-truck"></i></div>
+            <div><strong>2</strong><span>Active Orders</span></div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon" style="background:#fce4ec;color:var(--red)"><i class="fas fa-heart"></i></div>
+            <div><strong id="wlCount">0</strong><span>Wishlist Items</span></div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon" style="background:#fff3e0;color:var(--orange)"><i class="fas fa-rupee-sign"></i></div>
+            <div><strong>₹4,890</strong><span>Total Spent</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Orders -->
+      <div class="admin-table">
+        <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+          <h6 style="font-weight:700;margin:0">Recent Orders</h6>
+          <a href="#orders" onclick="showTab('orders', null)" style="font-size:0.82rem;color:var(--green)">View All</a>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead><tr><th>Order ID</th><th>Items</th><th>Date</th><th>Amount</th><th>Status</th><th>Track</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>#FM-2401</strong></td>
+                <td>Tomatoes, Milk, Butter</td>
+                <td>25 Apr 2025</td>
+                <td>₹348</td>
+                <td><span class="status-badge status-delivered">Delivered</span></td>
+                <td><button class="btn-icon btn-edit" onclick="showTracking('FM-2401')"><i class="fas fa-map-marker-alt"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>#FM-2398</strong></td>
+                <td>Apples, Yogurt, Dal</td>
+                <td>22 Apr 2025</td>
+                <td>₹527</td>
+                <td><span class="status-badge status-processing">Processing</span></td>
+                <td><button class="btn-icon btn-edit" onclick="showTracking('FM-2398')"><i class="fas fa-map-marker-alt"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>#FM-2385</strong></td>
+                <td>Mangoes, Paneer</td>
+                <td>18 Apr 2025</td>
+                <td>₹739</td>
+                <td><span class="status-badge status-delivered">Delivered</span></td>
+                <td><button class="btn-icon btn-edit"><i class="fas fa-map-marker-alt"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Orders -->
+    <div id="tab-orders" class="d-none">
+      <h4 style="font-family:var(--font-display);font-weight:900;margin-bottom:24px">My Orders</h4>
+      <div id="trackingPanel" class="d-none mb-4 bg-white rounded-3 p-4 shadow-sm">
+        <h6 style="font-weight:700">📦 Order Tracking – <span id="trackOrderId"></span></h6>
+        <div class="tracking-timeline mt-3">
+          <div class="track-step">
+            <div class="track-icon done"><i class="fas fa-check"></i></div>
+            <div><strong>Order Placed</strong><br/><small style="color:var(--text-light)">25 Apr 2025, 10:30 AM</small></div>
+          </div>
+          <div class="track-connector"></div>
+          <div class="track-step">
+            <div class="track-icon done"><i class="fas fa-store"></i></div>
+            <div><strong>Processing at Warehouse</strong><br/><small style="color:var(--text-light)">25 Apr 2025, 11:00 AM</small></div>
+          </div>
+          <div class="track-connector"></div>
+          <div class="track-step">
+            <div class="track-icon done"><i class="fas fa-truck"></i></div>
+            <div><strong>Out for Delivery</strong><br/><small style="color:var(--text-light)">25 Apr 2025, 2:15 PM</small></div>
+          </div>
+          <div class="track-connector pending"></div>
+          <div class="track-step">
+            <div class="track-icon pending"><i class="fas fa-home"></i></div>
+            <div><strong style="color:var(--text-light)">Delivered</strong><br/><small style="color:var(--text-light)">Expected: 4:00 PM</small></div>
+          </div>
+        </div>
+        <button class="btn btn-sm mt-2" style="background:var(--border);border-radius:8px" onclick="document.getElementById('trackingPanel').classList.add('d-none')">Close</button>
+      </div>
+      <div class="admin-table">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead><tr><th>Order ID</th><th>Items</th><th>Date</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td><strong>#FM-2401</strong></td><td>Tomatoes, Milk, Butter</td><td>25 Apr 2025</td><td>₹348</td><td><span class="status-badge status-delivered">Delivered</span></td><td><button class="btn-icon btn-edit" onclick="showTracking('FM-2401')"><i class="fas fa-eye"></i></button></td></tr>
+              <tr><td><strong>#FM-2398</strong></td><td>Apples, Yogurt, Dal</td><td>22 Apr 2025</td><td>₹527</td><td><span class="status-badge status-processing">Processing</span></td><td><button class="btn-icon btn-edit"><i class="fas fa-eye"></i></button></td></tr>
+              <tr><td><strong>#FM-2385</strong></td><td>Mangoes, Paneer</td><td>18 Apr 2025</td><td>₹739</td><td><span class="status-badge status-delivered">Delivered</span></td><td><button class="btn-icon btn-edit"><i class="fas fa-eye"></i></button></td></tr>
+              <tr><td><strong>#FM-2370</strong></td><td>Strawberries, Butter, Bread</td><td>12 Apr 2025</td><td>₹312</td><td><span class="status-badge status-cancelled">Cancelled</span></td><td><button class="btn-icon btn-delete"><i class="fas fa-redo"></i></button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Wishlist -->
+    <div id="tab-wishlist" class="d-none">
+      <h4 style="font-family:var(--font-display);font-weight:900;margin-bottom:24px">My Wishlist</h4>
+      <div class="row g-4" id="wishlistGrid"></div>
+      <div id="wishlistEmpty" class="wishlist-empty d-none">
+        <i class="fas fa-heart-broken" style="font-size:3rem;color:var(--border)"></i>
+        <h5 class="mt-3">No items in wishlist</h5>
+        <a href="products.html" class="btn btn-primary-fresh mt-3">Browse Products</a>
+      </div>
+    </div>
+
+    <!-- Tab: Profile -->
+    <div id="tab-profile" class="d-none">
+      <h4 style="font-family:var(--font-display);font-weight:900;margin-bottom:24px">My Profile</h4>
+      <div class="bg-white rounded-3 p-4 shadow-sm" style="max-width:600px">
+        <div class="d-flex align-items-center gap-4 mb-4 pb-4 border-bottom">
+          <div class="user-avatar" style="width:70px;height:70px;font-size:1.8rem" id="profileAvatar">U</div>
+          <div>
+            <strong id="profileName" style="font-size:1.1rem;display:block"></strong>
+            <span id="profileEmail" style="color:var(--text-light);font-size:0.85rem"></span>
+            <div class="mt-1"><span class="status-badge status-delivered">Verified Account</span></div>
+          </div>
+        </div>
+        <div class="row g-3">
+          <div class="col-6">
+            <label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px">First Name</label>
+            <input type="text" class="form-control-fresh" id="pFirst" value="Demo"/>
+          </div>
+          <div class="col-6">
+            <label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px">Last Name</label>
+            <input type="text" class="form-control-fresh" id="pLast" value="User"/>
+          </div>
+          <div class="col-12">
+            <label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px">Email</label>
+            <input type="email" class="form-control-fresh" id="pEmail"/>
+          </div>
+          <div class="col-12">
+            <label style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px">Phone</label>
+            <input type="tel" class="form-control-fresh" value="+91 98765 43210"/>
+          </div>
+        </div>
+        <button class="btn-auth mt-4" style="max-width:200px" onclick="alert('Profile updated!')">Save Changes</button>
+      </div>
+    </div>
+
+    <!-- Tab: Addresses -->
+    <div id="tab-addresses" class="d-none">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 style="font-family:var(--font-display);font-weight:900;margin:0">Saved Addresses</h4>
+        <button class="btn btn-sm" style="background:var(--green);color:#fff;border-radius:8px;font-weight:700;border:none" onclick="alert('Add address form coming soon!')">
+          <i class="fas fa-plus me-1"></i>Add New
+        </button>
+      </div>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="bg-white rounded-3 p-4 shadow-sm" style="border:2px solid var(--green)">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <span class="status-badge status-delivered">Default</span>
+              <button class="btn-icon btn-edit"><i class="fas fa-edit"></i></button>
+            </div>
+            <strong>Home</strong>
+            <p style="font-size:0.85rem;color:var(--text-mid);margin:8px 0 0">42 Green Park Colony, Sector 5<br/>Mumbai, Maharashtra 400001<br/>+91 98765 43210</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="bg-white rounded-3 p-4 shadow-sm">
+            <div class="d-flex justify-content-end mb-2">
+              <button class="btn-icon btn-edit"><i class="fas fa-edit"></i></button>
+            </div>
+            <strong>Office</strong>
+            <p style="font-size:0.85rem;color:var(--text-mid);margin:8px 0 0">TechPark, Building C, Floor 3<br/>Andheri East, Mumbai 400069<br/>+91 98765 43210</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="liveToast" class="toast"><div class="toast-header"><strong class="me-auto">🛒 FreshMart</strong><button type="button" class="btn-close" data-bs-dismiss="toast"></button></div><div class="toast-body" id="toastMsg"></div></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/data.js"></script>
+<script src="../js/cart.js"></script>
+<script>
+function showTab(name, el) {
+  document.querySelectorAll('[id^="tab-"]').forEach(t => t.classList.add('d-none'));
+  document.getElementById(`tab-${name}`)?.classList.remove('d-none');
+  document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+  if (el) el.classList.add('active');
+  if (name === 'wishlist') renderWishlistTab();
+  return false;
+}
+
+function showTracking(id) {
+  showTab('orders', null);
+  document.getElementById('trackOrderId').textContent = '#' + id;
+  document.getElementById('trackingPanel').classList.remove('d-none');
+}
+
+function renderWishlistTab() {
+  const wl = getWishlist();
+  const grid = document.getElementById('wishlistGrid');
+  const empty = document.getElementById('wishlistEmpty');
+  document.getElementById('wlCount').textContent = wl.length;
+  if (!wl.length) { grid.innerHTML = ''; empty.classList.remove('d-none'); return; }
+  empty.classList.add('d-none');
+  grid.innerHTML = wl.map(id => {
+    const p = PRODUCTS.find(x => x.id === id);
+    if (!p) return '';
+    return `<div class="col-6 col-md-4">
+      <div class="product-card">
+        <div class="product-img-wrap">
+          <span class="product-emoji">${p.emoji}</span>
+          <button class="wishlist-btn active" onclick="removeWL(${p.id}, this)"><i class="fas fa-heart"></i></button>
+        </div>
+        <div class="product-body">
+          <div class="product-name">${p.name}</div>
+          <div class="product-unit">${p.unit}</div>
+          <div class="price-row"><span class="price">₹${p.price}</span></div>
+          <button class="btn-add-cart w-100 mt-2" onclick="addToCart(${p.id})">
+            <i class="fas fa-cart-plus"></i> Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function removeWL(id, btn) {
+  toggleWishlist(id);
+  renderWishlistTab();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  updateCartBadge();
+  const user = getUser();
+  const name = user?.name || 'Guest';
+  document.getElementById('userAvatar').textContent = name.charAt(0).toUpperCase();
+  document.getElementById('profileAvatar').textContent = name.charAt(0).toUpperCase();
+  document.getElementById('userName').textContent = name;
+  document.getElementById('userEmail').textContent = user?.email || '';
+  document.getElementById('greetName').textContent = name.split(' ')[0];
+  document.getElementById('profileName').textContent = name;
+  document.getElementById('profileEmail').textContent = user?.email || '';
+  const pEmail = document.getElementById('pEmail');
+  if (pEmail) pEmail.value = user?.email || '';
+  document.getElementById('wlCount').textContent = getWishlist().length;
+});
+</script>
+</body>
+</html>
