@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard – FreshMart</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <style>
+    body{background:#f0f4f0}
+    .admin-sidebar{width:240px;background:#1a1a2e;min-height:100vh;flex-shrink:0;padding:0}
+    .admin-main{flex:1;padding:28px;overflow-y:auto}
+    .admin-brand{padding:20px;border-bottom:1px solid rgba(255,255,255,0.08)}
+    .admin-nav a{display:flex;align-items:center;gap:12px;padding:13px 20px;color:#a0a8c0;font-size:0.87rem;font-weight:600;transition:all 0.2s;text-decoration:none}
+    .admin-nav a:hover,.admin-nav a.active{background:rgba(76,175,80,0.15);color:#4caf50;border-right:3px solid #4caf50}
+    .admin-nav a i{width:18px;text-align:center}
+    .admin-nav .nav-section{padding:12px 20px 6px;font-size:0.68rem;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,0.3);text-transform:uppercase}
+    .kpi-card{background:#fff;border-radius:16px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,0.06);display:flex;align-items:center;gap:16px}
+    .kpi-icon{width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+    .kpi-card strong{display:block;font-size:1.6rem;font-weight:900;line-height:1}
+    .kpi-card span{font-size:0.78rem;color:var(--text-light)}
+    .kpi-card .trend{font-size:0.75rem;font-weight:700;margin-top:4px}
+    .trend-up{color:#4caf50}.trend-down{color:var(--red)}
+    .chart-bar{height:180px;display:flex;align-items:flex-end;gap:8px;padding:0 4px}
+    .bar{flex:1;background:linear-gradient(to top,var(--green),var(--green-light));border-radius:6px 6px 0 0;transition:all 0.3s;cursor:pointer;position:relative;min-width:20px}
+    .bar:hover{opacity:0.8}
+    .bar-label{font-size:0.7rem;color:var(--text-light);text-align:center;margin-top:4px}
+    .product-thumb{width:40px;height:40px;background:var(--off-white);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.4rem}
+  </style>
+</head>
+<body>
+<div class="d-flex">
+
+  <!-- Admin Sidebar -->
+  <aside class="admin-sidebar d-none d-lg-flex flex-column">
+    <div class="admin-brand">
+      <div style="color:#fff;font-family:var(--font-display);font-size:1.2rem;font-weight:900">🛒 FreshMart</div>
+      <div style="color:rgba(255,255,255,0.4);font-size:0.72rem;margin-top:2px">Admin Dashboard</div>
+    </div>
+    <nav class="admin-nav flex-1 py-2">
+      <div class="nav-section">Main</div>
+      <a href="#" class="active" onclick="showAdmin('overview',this)"><i class="fas fa-tachometer-alt"></i> Overview</a>
+      <div class="nav-section">Manage</div>
+      <a href="#" onclick="showAdmin('products',this)"><i class="fas fa-box"></i> Products</a>
+      <a href="#" onclick="showAdmin('orders',this)"><i class="fas fa-shopping-bag"></i> Orders</a>
+      <a href="#" onclick="showAdmin('users',this)"><i class="fas fa-users"></i> Users</a>
+      <a href="#" onclick="showAdmin('inventory',this)"><i class="fas fa-warehouse"></i> Inventory</a>
+      <div class="nav-section">Settings</div>
+      <a href="#" onclick="showAdmin('coupons',this)"><i class="fas fa-tags"></i> Coupons</a>
+      <a href="../index.html"><i class="fas fa-globe"></i> View Site</a>
+      <a href="login.html" style="color:#ef5350;margin-top:auto"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </nav>
+  </aside>
+
+  <!-- Admin Content -->
+  <main class="admin-main">
+
+    <!-- OVERVIEW -->
+    <div id="admin-overview">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div><h4 style="font-family:var(--font-display);font-weight:900;margin:0">Dashboard Overview</h4><p style="color:var(--text-light);font-size:0.82rem;margin:0">Monday, 28 April 2025</p></div>
+        <button class="btn btn-sm" style="background:var(--green);color:#fff;border-radius:8px;font-weight:700;border:none"><i class="fas fa-download me-1"></i>Export Report</button>
+      </div>
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-xl-3"><div class="kpi-card"><div class="kpi-icon" style="background:#e8f5e9;color:var(--green)"><i class="fas fa-rupee-sign"></i></div><div><strong>₹1,24,890</strong><span>Total Revenue</span><div class="trend trend-up"><i class="fas fa-arrow-up"></i> +18.4% this month</div></div></div></div>
+        <div class="col-6 col-xl-3"><div class="kpi-card"><div class="kpi-icon" style="background:#e3f2fd;color:#1565c0"><i class="fas fa-shopping-bag"></i></div><div><strong>847</strong><span>Total Orders</span><div class="trend trend-up"><i class="fas fa-arrow-up"></i> +12.1% this month</div></div></div></div>
+        <div class="col-6 col-xl-3"><div class="kpi-card"><div class="kpi-icon" style="background:#fce4ec;color:var(--red)"><i class="fas fa-users"></i></div><div><strong>3,241</strong><span>Total Users</span><div class="trend trend-up"><i class="fas fa-arrow-up"></i> +5.7% this month</div></div></div></div>
+        <div class="col-6 col-xl-3"><div class="kpi-card"><div class="kpi-icon" style="background:#fff3e0;color:var(--orange)"><i class="fas fa-box"></i></div><div><strong>38</strong><span>Products Listed</span><div class="trend trend-down"><i class="fas fa-arrow-down"></i> 4 low stock</div></div></div></div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="row g-4 mb-4">
+        <div class="col-lg-8">
+          <div class="bg-white rounded-3 p-4 shadow-sm">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h6 style="font-weight:700;margin:0">Weekly Revenue</h6>
+              <span style="font-size:0.78rem;color:var(--text-light)">This week</span>
+            </div>
+            <div class="chart-bar" id="revenueChart"></div>
+            <div class="d-flex gap-2 mt-1" id="revenueLabels"></div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="bg-white rounded-3 p-4 shadow-sm h-100">
+            <h6 style="font-weight:700;margin-bottom:16px">Sales by Category</h6>
+            <div id="catBreakdown"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Orders -->
+      <div class="admin-table">
+        <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+          <h6 style="font-weight:700;margin:0">Recent Orders</h6>
+          <button class="btn btn-sm" style="background:var(--green-pale);color:var(--green);border-radius:8px;font-weight:700;border:none" onclick="showAdmin('orders',null)">View All</button>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead><tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Amount</th><th>Date</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr><td><strong>#FM-2401</strong></td><td>Priya S.</td><td>3 items</td><td>₹348</td><td>25 Apr</td><td><span class="status-badge status-delivered">Delivered</span></td><td><button class="btn-icon btn-edit"><i class="fas fa-eye"></i></button></td></tr>
+              <tr><td><strong>#FM-2400</strong></td><td>Rahul M.</td><td>5 items</td><td>₹729</td><td>25 Apr</td><td><span class="status-badge status-processing">Processing</span></td><td><button class="btn-icon btn-edit"><i class="fas fa-eye"></i></button></td></tr>
+              <tr><td><strong>#FM-2399</strong></td><td>Anita P.</td><td>2 items</td><td>₹189</td><td>24 Apr</td><td><span class="status-badge status-pending">Pending</span></td><td><button class="btn-icon btn-edit"><i class="fas fa-eye"></i></button></td></tr>
+              <tr><td><strong>#FM-2398</strong></td><td>Suresh K.</td><td>7 items</td><td>₹1,240</td><td>24 Apr</td><td><span class="status-badge status-delivered">Delivered</span></td><td><button class="btn-icon btn-edit"><i class="fas fa-eye"></i></button></td></tr>
+              <tr><td><strong>#FM-2397</strong></td><td>Meena R.</td><td>4 items</td><td>₹567</td><td>23 Apr</td><td><span class="status-badge status-cancelled">Cancelled</span></td><td><button class="btn-icon btn-delete"><i class="fas fa-trash"></i></button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCTS -->
+    <div id="admin-products" class="d-none">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 style="font-family:var(--font-display);font-weight:900;margin:0">Products</h4>
+        <button class="btn btn-sm" style="background:var(--green);color:#fff;border-radius:8px;font-weight:700;border:none" onclick="openProductModal()">
+          <i class="fas fa-plus me-1"></i>Add Product
+        </button>
+      </div>
+      <div class="admin-table">
+        <div class="p-3 border-bottom d-flex gap-2">
+          <input type="text" class="form-control-fresh" placeholder="Search products…" style="max-width:260px" oninput="filterAdminProducts(this.value)"/>
+          <select class="form-control-fresh" style="max-width:160px" onchange="filterAdminProducts(document.querySelector('[oninput]').value, this.value)">
+            <option value="">All Categories</option>
+            <option>vegetables</option><option>fruits</option><option>dairy</option><option>snacks</option><option>pulses</option><option>beverages</option>
+          </select>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="adminProductTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div id="admin-orders" class="d-none">
+      <h4 style="font-family:var(--font-display);font-weight:900;margin-bottom:24px">All Orders</h4>
+      <div class="admin-table">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead><tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Amount</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td><strong>#FM-2401</strong></td><td>Priya Sharma</td><td>Tomatoes, Milk, Butter</td><td>₹348</td><td>25 Apr 2025</td><td><select class="form-select form-select-sm" style="width:130px;border-radius:6px"><option selected>Delivered</option><option>Processing</option><option>Pending</option><option>Cancelled</option></select></td><td><button class="btn-icon btn-edit"><i class="fas fa-eye"></i></button><button class="btn-icon btn-delete ms-1"><i class="fas fa-trash"></i></button></td></tr>
+              <tr><td><strong>#FM-2400</strong></td><td>Rahul Mehta</td><td>Apples, Yogurt, Dal, Chips</td><td>₹729</td><td>25 Apr 2025</td><td><select class="form-select form-select-sm" style="width:130px;border-radius:6px"><option>Delivered</option><option selected>Processing</option><option>Pending</option><option>Cancelled</option></select></td><td><button class="btn-icon btn-edit"><i class="fas fa-eye"></i></button><button class="btn-icon btn-delete ms-1"><i class="fas fa-trash"></i></button></td></tr>
+              <tr><td><strong>#FM-2399</strong></td><td>Anita Patel</td><td>Mangoes, Paneer</td><td>₹189</td><td>24 Apr 2025</td><td><select class="form-select form-select-sm" style="width:130px;border-radius:6px"><option>Delivered</option><option>Processing</option><option selected>Pending</option><option>Cancelled</option></select></td><td><button class="btn-icon btn-edit"><i class="fas fa-eye"></i></button><button class="btn-icon btn-delete ms-1"><i class="fas fa-trash"></i></button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- USERS -->
+    <div id="admin-users" class="d-none">
+      <h4 style="font-family:var(--font-display);font-weight:900;margin-bottom:24px">Users</h4>
+      <div class="admin-table">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead><tr><th>User</th><th>Email</th><th>Phone</th><th>Orders</th><th>Joined</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td><div class="d-flex align-items-center gap-2"><div class="reviewer-avatar" style="width:32px;height:32px;font-size:0.85rem">P</div>Priya Sharma</div></td><td>priya@email.com</td><td>+91 98765 11111</td><td>8</td><td>Jan 2024</td><td><span class="status-badge status-delivered">Active</span></td><td><button class="btn-icon btn-edit"><i class="fas fa-edit"></i></button><button class="btn-icon btn-delete ms-1"><i class="fas fa-ban"></i></button></td></tr>
+              <tr><td><div class="d-flex align-items-center gap-2"><div class="reviewer-avatar" style="width:32px;height:32px;font-size:0.85rem">R</div>Rahul Mehta</div></td><td>rahul@email.com</td><td>+91 98765 22222</td><td>15</td><td>Mar 2024</td><td><span class="status-badge status-delivered">Active</span></td><td><button class="btn-icon btn-edit"><i class="fas fa-edit"></i></button><button class="btn-icon btn-delete ms-1"><i class="fas fa-ban"></i></button></td></tr>
+              <tr><td><div class="d-flex align-items-center gap-2"><div class="reviewer-avatar" style="width:32px;height:32px;font-size:0.85rem;background:#7b1fa2">A</div>Anita Patel</div></td><td>anita@email.com</td><td>+91 98765 33333</td><td>3</td><td>Apr 2025</td><td><span class="status-badge status-pending">New</span></td><td><button class="btn-icon btn-edit"><i class="fas fa-edit"></i></button><button class="btn-icon btn-delete ms-1"><i class="fas fa-ban"></i></button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- INVENTORY -->
+    <div id="admin-inventory" class="d-none">
+      <h4 style="font-family:var(--font-display);font-weight:900;margin-bottom:24px">Inventory</h4>
+      <div class="row g-3 mb-4">
+        <div class="col-md-3"><div class="kpi-card"><div class="kpi-icon" style="background:#e8f5e9;color:var(--green)"><i class="fas fa-check-circle"></i></div><div><strong>31</strong><span>In Stock</span></div></div></div>
+        <div class="col-md-3"><div class="kpi-card"><div class="kpi-icon" style="background:#fff3e0;color:var(--orange)"><i class="fas fa-exclamation-triangle"></i></div><div><strong>4</strong><span>Low Stock</span></div></div></div>
+        <div class="col-md-3"><div class="kpi-card"><div class="kpi-icon" style="background:#ffebee;color:var(--red)"><i class="fas fa-times-circle"></i></div><div><strong>3</strong><span>Out of Stock</span></div></div></div>
+        <div class="col-md-3"><div class="kpi-card"><div class="kpi-icon" style="background:#e3f2fd;color:#1565c0"><i class="fas fa-boxes"></i></div><div><strong>38</strong><span>Total Products</span></div></div></div>
+      </div>
+      <div class="admin-table">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead><tr><th>Product</th><th>Category</th><th>Stock Qty</th><th>Reorder Level</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr><td><div class="d-flex align-items-center gap-2"><div class="product-thumb">🍅</div>Organic Tomatoes</div></td><td>Vegetables</td><td>120</td><td>20</td><td><span class="status-badge status-delivered">In Stock</span></td><td><button class="btn-icon btn-edit"><i class="fas fa-edit"></i></button></td></tr>
+              <tr><td><div class="d-flex align-items-center gap-2"><div class="product-thumb">🥕</div>Baby Carrots</div></td><td>Vegetables</td><td>5</td><td>20</td><td><span class="status-badge status-processing">Low Stock</span></td><td><button class="btn-icon btn-edit"><i class="fas fa-edit"></i></button></td></tr>
+              <tr><td><div class="d-flex align-items-center gap-2"><div class="product-thumb">🍎</div>Pomegranate</div></td><td>Fruits</td><td>3</td><td>15</td><td><span class="status-badge status-processing">Low Stock</span></td><td><button class="btn-icon btn-edit"><i class="fas fa-edit"></i></button></td></tr>
+              <tr><td><div class="d-flex align-items-center gap-2"><div class="product-thumb">🍉</div>Watermelon</div></td><td>Fruits</td><td>30</td><td>10</td><td><span class="status-badge status-delivered">In Stock</span></td><td><button class="btn-icon btn-edit"><i class="fas fa-edit"></i></button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- COUPONS -->
+    <div id="admin-coupons" class="d-none">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 style="font-family:var(--font-display);font-weight:900;margin:0">Coupons</h4>
+        <button class="btn btn-sm" style="background:var(--green);color:#fff;border-radius:8px;font-weight:700;border:none" onclick="alert('Add coupon form')"><i class="fas fa-plus me-1"></i>Add Coupon</button>
+      </div>
+      <div class="admin-table">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead><tr><th>Code</th><th>Discount</th><th>Type</th><th>Min Order</th><th>Usage</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td><code style="background:var(--green-pale);padding:3px 10px;border-radius:6px;font-weight:700;color:var(--green)">FRESHMART20</code></td><td>20%</td><td>Percentage</td><td>₹299</td><td>1,234</td><td><span class="status-badge status-delivered">Active</span></td><td><button class="btn-icon btn-edit"><i class="fas fa-edit"></i></button><button class="btn-icon btn-delete ms-1"><i class="fas fa-trash"></i></button></td></tr>
+              <tr><td><code style="background:var(--green-pale);padding:3px 10px;border-radius:6px;font-weight:700;color:var(--green)">SAVE50</code></td><td>₹50 flat</td><td>Flat</td><td>₹499</td><td>567</td><td><span class="status-badge status-delivered">Active</span></td><td><button class="btn-icon btn-edit"><i class="fas fa-edit"></i></button><button class="btn-icon btn-delete ms-1"><i class="fas fa-trash"></i></button></td></tr>
+              <tr><td><code style="background:var(--green-pale);padding:3px 10px;border-radius:6px;font-weight:700;color:var(--green)">NEWUSER10</code></td><td>10%</td><td>Percentage</td><td>₹0</td><td>892</td><td><span class="status-badge status-delivered">Active</span></td><td><button class="btn-icon btn-edit"><i class="fas fa-edit"></i></button><button class="btn-icon btn-delete ms-1"><i class="fas fa-trash"></i></button></td></tr>
+              <tr><td><code style="background:var(--off-white);padding:3px 10px;border-radius:6px;font-weight:700;color:var(--text-light)">SUMMER25</code></td><td>25%</td><td>Percentage</td><td>₹399</td><td>234</td><td><span class="status-badge status-cancelled">Expired</span></td><td><button class="btn-icon btn-edit"><i class="fas fa-edit"></i></button><button class="btn-icon btn-delete ms-1"><i class="fas fa-trash"></i></button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Add Product Modal -->
+<div class="modal fade" id="productModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="background:var(--green);color:#fff">
+        <h5 class="modal-title fw-bold">Add New Product</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-4">
+        <div class="row g-3">
+          <div class="col-md-6"><label class="form-label small fw-bold">Product Name *</label><input type="text" class="form-control-fresh w-100" placeholder="e.g. Organic Tomatoes"/></div>
+          <div class="col-md-6"><label class="form-label small fw-bold">Category *</label>
+            <select class="form-control-fresh w-100"><option>vegetables</option><option>fruits</option><option>dairy</option><option>snacks</option><option>pulses</option><option>beverages</option></select>
+          </div>
+          <div class="col-md-4"><label class="form-label small fw-bold">Price (₹) *</label><input type="number" class="form-control-fresh w-100" placeholder="49"/></div>
+          <div class="col-md-4"><label class="form-label small fw-bold">Old Price (₹)</label><input type="number" class="form-control-fresh w-100" placeholder="69"/></div>
+          <div class="col-md-4"><label class="form-label small fw-bold">Stock Qty *</label><input type="number" class="form-control-fresh w-100" placeholder="100"/></div>
+          <div class="col-md-6"><label class="form-label small fw-bold">Unit</label><input type="text" class="form-control-fresh w-100" placeholder="500g, 1 kg, 1 Liter…"/></div>
+          <div class="col-md-6"><label class="form-label small fw-bold">Emoji Icon</label><input type="text" class="form-control-fresh w-100" placeholder="🍅"/></div>
+          <div class="col-12"><label class="form-label small fw-bold">Description</label><textarea class="form-control-fresh w-100" rows="3" placeholder="Product description…"></textarea></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn" style="background:var(--green);color:#fff;font-weight:700;border-radius:8px" onclick="alert('Product saved! (Demo – connect to Spring Boot API)');bootstrap.Modal.getInstance(document.getElementById('productModal')).hide()">Save Product</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/data.js"></script>
+<script src="../js/cart.js"></script>
+<script>
+function showAdmin(name, el) {
+  document.querySelectorAll('[id^="admin-"]').forEach(t => t.classList.add('d-none'));
+  document.getElementById('admin-'+name).classList.remove('d-none');
+  document.querySelectorAll('.admin-nav a').forEach(a => a.classList.remove('active'));
+  if (el) el.classList.add('active');
+  if (name==='products') renderAdminProducts(PRODUCTS);
+  return false;
+}
+
+function openProductModal() {
+  new bootstrap.Modal(document.getElementById('productModal')).show();
+}
+
+function renderAdminProducts(prods) {
+  document.getElementById('adminProductTable').innerHTML = prods.map(p => {
+    const stockClass = p.stock===0?'status-cancelled':p.stock<=5?'status-processing':'status-delivered';
+    const stockLabel = p.stock===0?'Out of Stock':p.stock<=5?'Low Stock':'In Stock';
+    return `<tr>
+      <td><div class="d-flex align-items-center gap-2"><div class="product-thumb">${p.emoji}</div><div><div style="font-weight:700;font-size:0.88rem">${p.name}</div><div style="font-size:0.75rem;color:var(--text-light)">${p.unit}</div></div></div></td>
+      <td><span style="text-transform:capitalize">${p.cat}</span></td>
+      <td><strong>₹${p.price}</strong>${p.oldPrice?`<span style="color:var(--text-light);font-size:0.78rem;text-decoration:line-through;margin-left:4px">₹${p.oldPrice}</span>`:''}</td>
+      <td>${p.stock}</td>
+      <td><span class="status-badge ${stockClass}">${stockLabel}</span></td>
+      <td><button class="btn-icon btn-edit" onclick="alert('Edit: ${p.name}')"><i class="fas fa-edit"></i></button><button class="btn-icon btn-delete ms-1" onclick="alert('Delete: ${p.name}')"><i class="fas fa-trash"></i></button></td>
+    </tr>`;
+  }).join('');
+}
+
+function filterAdminProducts(q, cat='') {
+  let data = [...PRODUCTS];
+  if (q) data = data.filter(p => p.name.toLowerCase().includes(q.toLowerCase()));
+  if (cat) data = data.filter(p => p.cat===cat);
+  renderAdminProducts(data);
+}
+
+// Mini bar chart
+function buildChart() {
+  const vals = [18400, 22100, 15300, 28900, 21700, 31200, 24800];
+  const labels = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const max = Math.max(...vals);
+  const chart = document.getElementById('revenueChart');
+  const labelsDiv = document.getElementById('revenueLabels');
+  if (!chart) return;
+  chart.innerHTML = vals.map((v,i) => `<div class="bar" style="height:${Math.round(v/max*100)}%;flex:1" title="₹${v.toLocaleString()}"></div>`).join('');
+  labelsDiv.innerHTML = labels.map(l => `<div class="bar-label" style="flex:1">${l}</div>`).join('');
+  // Category donut text
+  const cats = [{name:'Vegetables',pct:32,color:'#2e7d32'},{name:'Fruits',pct:28,color:'#f57c00'},{name:'Dairy',pct:18,color:'#1565c0'},{name:'Snacks',pct:14,color:'#7b1fa2'},{name:'Pulses',pct:8,color:'#c62828'}];
+  const bd = document.getElementById('catBreakdown');
+  if (bd) bd.innerHTML = cats.map(c => `<div class="d-flex align-items-center gap-2 mb-2">
+    <div style="width:12px;height:12px;border-radius:3px;background:${c.color};flex-shrink:0"></div>
+    <span style="flex:1;font-size:0.82rem">${c.name}</span>
+    <div style="width:80px;height:6px;background:var(--border);border-radius:3px;overflow:hidden">
+      <div style="height:100%;width:${c.pct}%;background:${c.color};border-radius:3px"></div>
+    </div>
+    <span style="font-size:0.78rem;font-weight:700;width:30px;text-align:right">${c.pct}%</span>
+  </div>`).join('');
+}
+
+document.addEventListener('DOMContentLoaded', () => { buildChart(); renderAdminProducts(PRODUCTS); });
+</script>
+</body>
+</html>
